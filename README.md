@@ -13,12 +13,10 @@ $ wc fang_et_al_genotypes.txt
 
 
 $ du fang_et_al_genotypes.txt
-
 10796   fang_et_al_genotypes.txt
 
 
 $ du -h fang_et_al_genotypes.txt
-
 11M     fang_et_al_genotypes.txt
 
 
