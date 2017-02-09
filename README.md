@@ -230,4 +230,48 @@ $ head -n 2 snp_maize.txt
 ?/? ?/? ?/? ?/? ?/? ?/? C/C ?/? C/C C/C ?/? C/C C
 
 
-*That didn’t work… I will try again tomorrow on a mac
+*That didn’t work… I will try again tomorrow on a mac. 
+no changes on the mac, problem with the methodology. Used codes provided by T.Nolan
+
+Owner@Allie-Sunshine MINGW64 ~/desktop/BCB546X-Spring2017/UNIX_Assignment (master)
+$ head -n1 fang_et_al_genotypes.txt > tn_maize_genotypes.txt
+
+Owner@Allie-Sunshine MINGW64 ~/desktop/BCB546X-Spring2017/UNIX_Assignment (master)
+$ head -n1 fang_et_al_genotypes.txt > tn_teosinte_genotypes.txt
+
+Owner@Allie-Sunshine MINGW64 ~/desktop/BCB546X-Spring2017/UNIX_Assignment (master)
+$ grep -E -w "ZMMIL|ZMMLR|ZMMMR" fang_et_al_genotypes.txt >> tn_maize_genotypes.txt
+
+Owner@Allie-Sunshine MINGW64 ~/desktop/BCB546X-Spring2017/UNIX_Assignment (master)
+$ grep -E -w "ZMPBA|ZMPIL|ZMPJA" fang_et_al_genotypes.txt >> tn_teosinte_genotypes.tx        t
+
+Owner@Allie-Sunshine MINGW64 ~/desktop/BCB546X-Spring2017/UNIX_Assignment (master)
+$ awk -f transpose.awk tn_maize_genotypes.txt > tn_transposed_maize_genotypes.txt
+
+Owner@Allie-Sunshine MINGW64 ~/desktop/BCB546X-Spring2017/UNIX_Assignment (master)
+$ awk -f transpose.awk tn_teosinte_genotypes.txt > tn_transposed_teosinte_genotypes.t        xt
+
+Owner@Allie-Sunshine MINGW64 ~/desktop/BCB546X-Spring2017/UNIX_Assignment (master)
+$ cut -f1,3,4 snp_position.txt > tn_snp_position_short.txt
+
+Owner@Allie-Sunshine MINGW64 ~/desktop/BCB546X-Spring2017/UNIX_Assignment (master)
+$ tail -n+4 tn_transposed_maize_genotypes.txt | sort -k1,1 > tn_transposed_maize_genotypes_sorted.txt
+
+Owner@Allie-Sunshine MINGW64 ~/desktop/BCB546X-Spring2017/UNIX_Assignment (master)
+$ tail -n+4 tn_transposed_teosinte_genotypes.txt | sort -k1,1 > tn_transposed_teosinte_genotypes_sorted.txt
+
+Owner@Allie-Sunshine MINGW64 ~/desktop/BCB546X-Spring2017/UNIX_Assignment (master)
+$ tail -n+2 tn_snp_position_short.txt | sort -k1,1 > tn_snp_position_short_sorted.txt
+
+Owner@Allie-Sunshine MINGW64 ~/desktop/BCB546X-Spring2017/UNIX_Assignment (master)
+$ join -t $'\t' -1 1 -2 1 tn_snp_position_short_sorted.txt tn_transposed_teosinte_genotypes_sorted.txt > tn_joined_teosinte_genotypes.txt
+
+Owner@Allie-Sunshine MINGW64 ~/desktop/BCB546X-Spring2017/UNIX_Assignment (master)
+$ join -t $'\t' -1 1 -2 1 tn_snp_position_short_sorted.txt tn_transposed_maize_genotypes_sorted.txt > tn_joined_maize_genotypes.txt
+
+Owner@Allie-Sunshine MINGW64 ~/desktop/BCB546X-Spring2017/UNIX_Assignment (master)
+$ sed 's/?/-/g' tn_joined_maize_genotypes.txt > edited_maize_genotypes.txt
+
+Owner@Allie-Sunshine MINGW64 ~/desktop/BCB546X-Spring2017/UNIX_Assignment (master)
+$ sed 's/?/-/g' tn_joined_teosinte_genotypes.txt > edited_teosinte_genotypes.txt
+
