@@ -233,45 +233,52 @@ $ head -n 2 snp_maize.txt
 *That didn’t work… I will try again tomorrow on a mac. 
 no changes on the mac, problem with the methodology. Used codes provided by T.Nolan
 
-Owner@Allie-Sunshine MINGW64 ~/desktop/BCB546X-Spring2017/UNIX_Assignment (master)
-$ head -n1 fang_et_al_genotypes.txt > tn_maize_genotypes.txt
+needed to mover the header into the file first, then able to start moving each type of genome data into each file
 
 Owner@Allie-Sunshine MINGW64 ~/desktop/BCB546X-Spring2017/UNIX_Assignment (master)
-$ head -n1 fang_et_al_genotypes.txt > tn_teosinte_genotypes.txt
+$ head -n 1 fang_et_al_genotypes.txt > new_teosinte_genotypes.txt
 
 Owner@Allie-Sunshine MINGW64 ~/desktop/BCB546X-Spring2017/UNIX_Assignment (master)
-$ grep -E -w "ZMMIL|ZMMLR|ZMMMR" fang_et_al_genotypes.txt >> tn_maize_genotypes.txt
+$ cat teoIL.txt teoJA.txt teoBA.txt >> new_teosinte_genotypes.txt
 
 Owner@Allie-Sunshine MINGW64 ~/desktop/BCB546X-Spring2017/UNIX_Assignment (master)
-$ grep -E -w "ZMPBA|ZMPIL|ZMPJA" fang_et_al_genotypes.txt >> tn_teosinte_genotypes.tx        t
+$ awk -f transpose.awk new_teosinte_genotypes.txt > transposed_teosinte_genotypes.txt
 
 Owner@Allie-Sunshine MINGW64 ~/desktop/BCB546X-Spring2017/UNIX_Assignment (master)
-$ awk -f transpose.awk tn_maize_genotypes.txt > tn_transposed_maize_genotypes.txt
+$ cut -f 1-9 transposed_teosinte_genotypes.txt | head | column -t
+Sample_ID  TIP-281A                 TIP-365-A              TIP-521                  TIP-301-A                TIP-462                  TIP-282A                 TIP-366-A              TIP-523
+JG_OTU     Zmp-TIL01-S5-B-TZITZI_v  Zmp-TIL01-S6-B-TZITZI  Zmp-TIL01-S8-B-TZITZI_s  Zmp-TIL02-S2-B-ACAPET_v  Zmp-TIL02-S3-B-ACAPET_s  Zmp-TIL03-S5-J-ELIMON_v  Zmp-TIL03-S6-J-ELIMON  Zmp-TIL03-S8-J-ELIMON_s
+Group      ZMPIL                    ZMPIL                  ZMPIL                    ZMPIL                    ZMPIL                    ZMPIL                    ZMPIL                  ZMPIL
+abph1.20   G/G                      ?/?                    G/G                      C/C                      C/C                      G/G                      G/G                    G/G
+abph1.22   A/A                      A/A                    A/A                      A/A                      A/A                      A/A                      A/A                    A/A
+ae1.3      T/T                      T/T                    T/T                      T/T                      T/T                      T/T                      T/T                    T/T
+ae1.4      G/G                      G/G                    G/G                      G/G                      G/G                      G/G                      G/G                    G/G
+ae1.5      T/T                      T/T                    T/T                      C/T                      C/T                      T/T                      T/T                    T/T
+an1.4      C/C                      C/C                    C/C                      C/C                      C/C                      C/C                      C/C                    C/C
+ba1.6      A/A                      A/A                    A/A                      A/G                      G/G                      A/A                      A/A                    A/A
 
 Owner@Allie-Sunshine MINGW64 ~/desktop/BCB546X-Spring2017/UNIX_Assignment (master)
-$ awk -f transpose.awk tn_teosinte_genotypes.txt > tn_transposed_teosinte_genotypes.t        xt
+$ sort -k1,1 transposed_teosinte_genotypes.txt > sort_transp_teo.txt
+
+after sorting all the files, I was finally able to join them together and have results
 
 Owner@Allie-Sunshine MINGW64 ~/desktop/BCB546X-Spring2017/UNIX_Assignment (master)
-$ cut -f1,3,4 snp_position.txt > tn_snp_position_short.txt
+$ join -t $'\t' -1 1 -2 1 cut_sort-snp.txt sort_transp_teo.txt > joined_teosinte.txt
+
+created files with a -/-
 
 Owner@Allie-Sunshine MINGW64 ~/desktop/BCB546X-Spring2017/UNIX_Assignment (master)
-$ tail -n+4 tn_transposed_maize_genotypes.txt | sort -k1,1 > tn_transposed_maize_genotypes_sorted.txt
+$ sed 's/?/-/g' joined_maize.txt > edited_maize_genotypes.txt
 
 Owner@Allie-Sunshine MINGW64 ~/desktop/BCB546X-Spring2017/UNIX_Assignment (master)
-$ tail -n+4 tn_transposed_teosinte_genotypes.txt | sort -k1,1 > tn_transposed_teosinte_genotypes_sorted.txt
+$ sed 's/?/-/g' joined_teosinte.txt > edited_teosinte_genotypes.txt
+
+used the following to sort out text files with data for each individual chromosome. did this for all 4 files
 
 Owner@Allie-Sunshine MINGW64 ~/desktop/BCB546X-Spring2017/UNIX_Assignment (master)
-$ tail -n+2 tn_snp_position_short.txt | sort -k1,1 > tn_snp_position_short_sorted.txt
+$ sort -k2,2n joined_maize.txt | for i in {1..10}; do awk '$2=='$i'' joined_maize.txt > maize_chrom"$i".txt; done;
+
+had to reverse sort my -/- files
 
 Owner@Allie-Sunshine MINGW64 ~/desktop/BCB546X-Spring2017/UNIX_Assignment (master)
-$ join -t $'\t' -1 1 -2 1 tn_snp_position_short_sorted.txt tn_transposed_teosinte_genotypes_sorted.txt > tn_joined_teosinte_genotypes.txt
-
-Owner@Allie-Sunshine MINGW64 ~/desktop/BCB546X-Spring2017/UNIX_Assignment (master)
-$ join -t $'\t' -1 1 -2 1 tn_snp_position_short_sorted.txt tn_transposed_maize_genotypes_sorted.txt > tn_joined_maize_genotypes.txt
-
-Owner@Allie-Sunshine MINGW64 ~/desktop/BCB546X-Spring2017/UNIX_Assignment (master)
-$ sed 's/?/-/g' tn_joined_maize_genotypes.txt > edited_maize_genotypes.txt
-
-Owner@Allie-Sunshine MINGW64 ~/desktop/BCB546X-Spring2017/UNIX_Assignment (master)
-$ sed 's/?/-/g' tn_joined_teosinte_genotypes.txt > edited_teosinte_genotypes.txt
-
+$ sort -k1,1 -r -t $'\t' r_teosinte_chrom1.txt > rr_maize_chrom1.txt                                                                                                 
